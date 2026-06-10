@@ -1,0 +1,834 @@
+{
+	"info": {
+		"_postman_id": "83dcb6db-9e40-48c0-bbaa-03563033bf45",
+		"name": "Loan Default Risk EWS",
+		"description": "Early Warning System API — all endpoints with demo tokens pre-filled",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6775165",
+		"_collection_link": "https://cloudy-station-771347.postman.co/workspace/Sagar~7ca72026-0174-45f4-ac0c-16417dbbf410/collection/6775165-83dcb6db-9e40-48c0-bbaa-03563033bf45?action=share&source=collection_link&creator=6775165"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "GET /health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check if server is up. No auth required."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Alerts — Analyst",
+			"item": [
+				{
+					"name": "Generate All Alerts (Neha)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/generate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"generate"
+							]
+						},
+						"description": "Triggers fresh risk scoring + LLM explanation for all of Neha's assigned borrowers (B001, B002, B005). Run this first to populate the alert store."
+					},
+					"response": []
+				},
+				{
+					"name": "Generate All Alerts (Vijay)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/generate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"generate"
+							]
+						},
+						"description": "Same but for Vijay's borrowers (B003, B004 — High Risk and Critical)."
+					},
+					"response": []
+				},
+				{
+					"name": "List All Alerts (Neha)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts"
+							]
+						},
+						"description": "Returns all cached alerts for Neha's assigned borrowers, sorted by risk score desc."
+					},
+					"response": []
+				},
+				{
+					"name": "List Alerts — Filter by Category (Critical)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts?category=Critical",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Critical",
+									"description": "Options: Low | Watchlist | High Risk | Critical"
+								}
+							]
+						},
+						"description": "Filter alerts by risk category. Use Vijay's token since B004 (Critical) is his."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alert — B001 (Low Risk)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B001",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B001"
+							]
+						},
+						"description": "Arjun Mehta — expected Low Risk. Full analyst view with signals and LLM explanation."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alert — B002 (Watchlist)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B002",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B002"
+							]
+						},
+						"description": "Priya Sharma — expected Watchlist. Late payment trend + elevated utilization."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alert — B003 (High Risk)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B003",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B003"
+							]
+						},
+						"description": "Rohit Verma — expected High Risk. Missed EMI + failed auto-debits + income drop."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alert — B004 (Critical)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B004",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B004"
+							]
+						},
+						"description": "Sunita Patel — expected Critical. 2 consecutive missed EMIs, partial payment, 92% utilization."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alert — B005 (Watchlist / Insufficient History)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B005",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B005"
+							]
+						},
+						"description": "Karan Singh — edge case: only 2 EMIs on record. Uncertainty penalty applied."
+					},
+					"response": []
+				},
+				{
+					"name": "Analyst Query — Why was B003 flagged?",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"question\": \"Why was borrower B003 flagged?\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B003/query",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B003",
+								"query"
+							]
+						},
+						"description": "LLM answers analyst questions grounded ONLY on available borrower data. No hallucination."
+					},
+					"response": []
+				},
+				{
+					"name": "Analyst Query — What income signals were detected?",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"question\": \"What income signals were detected for this borrower?\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B003/query",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B003",
+								"query"
+							]
+						},
+						"description": "Ask about income decline for B003."
+					},
+					"response": []
+				},
+				{
+					"name": "Analyst Query — What action should we take for B004?",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"question\": \"What action should we take and why?\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B004/query",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B004",
+								"query"
+							]
+						},
+						"description": "Ask for recommended action reasoning for critical borrower."
+					},
+					"response": []
+				},
+				{
+					"name": "Simulate Missed EMI — B003",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B003/simulate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B003",
+								"simulate"
+							]
+						},
+						"description": "What if Rohit misses the next EMI? Shows current vs simulated score + delta."
+					},
+					"response": []
+				},
+				{
+					"name": "Simulate Missed EMI — B001 (Low Risk baseline)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B001/simulate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B001",
+								"simulate"
+							]
+						},
+						"description": "How much does one missed EMI move a healthy borrower's score?"
+					},
+					"response": []
+				}
+			],
+			"description": "All routes require analyst Bearer token"
+		},
+		{
+			"name": "Portfolio — Analyst",
+			"item": [
+				{
+					"name": "Portfolio Summary (Neha)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/portfolio/summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"portfolio",
+								"summary"
+							]
+						},
+						"description": "Breakdown of Neha's borrowers by risk category + high-priority list."
+					},
+					"response": []
+				},
+				{
+					"name": "Portfolio Summary (Vijay)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/portfolio/summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"portfolio",
+								"summary"
+							]
+						},
+						"description": "Vijay's portfolio — expect High Risk and Critical entries."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrower List with Scores (Neha)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/portfolio/borrowers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"portfolio",
+								"borrowers"
+							]
+						},
+						"description": "Fast endpoint — no LLM call. Returns all assigned borrowers with current risk scores."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrower List with Scores (Vijay)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/portfolio/borrowers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"portfolio",
+								"borrowers"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Manager-level views. Analyst token required."
+		},
+		{
+			"name": "Borrower Self-View",
+			"item": [
+				{
+					"name": "Borrower View — Arjun (B001, Low)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{borrowerToken_arjun}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B001",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B001"
+							]
+						},
+						"description": "Borrower sees a friendly explanation + recommended action. No risk scores exposed."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrower View — Sunita (B004, Critical)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{borrowerToken_sunita}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B004",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B004"
+							]
+						},
+						"description": "Even a critical borrower gets a sanitised, non-alarming view."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrower View — Rohit (B003, High Risk)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{borrowerToken_rohit}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B003",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B003"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Borrowers can only see their own data — sanitised view (no risk scores)"
+		},
+		{
+			"name": "RBAC — Error Cases",
+			"item": [
+				{
+					"name": "No Auth Header → 401",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/alerts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts"
+							]
+						},
+						"description": "Missing Authorization header. Expect 401."
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Token → 401",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer invalid-token-xyz"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts"
+							]
+						},
+						"description": "Garbage token. Expect 401."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrower Accessing Another Borrower → 403",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{borrowerToken_arjun}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B002",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B002"
+							]
+						},
+						"description": "Arjun (B001) tries to access Priya's (B002) alert. Expect 403."
+					},
+					"response": []
+				},
+				{
+					"name": "Analyst Accessing Another Analyst's Borrower → 403",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B004",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B004"
+							]
+						},
+						"description": "Neha (A001) tries to access B004 which is Vijay's (A002). Expect 403."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrower Trying Analyst Route → 403",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{borrowerToken_arjun}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/generate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"generate"
+							]
+						},
+						"description": "Borrower tries to trigger alert generation. Expect 403."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrower Trying Analyst Query → 403",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{borrowerToken_arjun}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"question\": \"Why am I flagged?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B001/query",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B001",
+								"query"
+							]
+						},
+						"description": "Borrower tries to use analyst query endpoint on their own ID. Expect 403."
+					},
+					"response": []
+				},
+				{
+					"name": "Query with Missing Body → 400",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_vijay}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B003/query",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B003",
+								"query"
+							]
+						},
+						"description": "Analyst posts with no question field. Expect 400."
+					},
+					"response": []
+				},
+				{
+					"name": "Non-existent Borrower → 404",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{analystToken_neha}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/alerts/B999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"alerts",
+								"B999"
+							]
+						},
+						"description": "Borrower ID doesn't exist. Expect 403 (access denied before 404 even fires)."
+					},
+					"response": []
+				}
+			],
+			"description": "These should all return 401 or 403"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "analystToken_neha",
+			"value": "token-analyst-neha"
+		},
+		{
+			"key": "analystToken_vijay",
+			"value": "token-analyst-vijay"
+		},
+		{
+			"key": "borrowerToken_arjun",
+			"value": "token-borrower-arjun"
+		},
+		{
+			"key": "borrowerToken_priya",
+			"value": "token-borrower-priya"
+		},
+		{
+			"key": "borrowerToken_rohit",
+			"value": "token-borrower-rohit"
+		},
+		{
+			"key": "borrowerToken_sunita",
+			"value": "token-borrower-sunita"
+		},
+		{
+			"key": "borrowerToken_karan",
+			"value": "token-borrower-karan"
+		}
+	]
+}
