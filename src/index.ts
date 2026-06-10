@@ -1,8 +1,13 @@
 import "dotenv/config";
 import express from "express";
+import alertRoutes from "./routes/alerts";
+import portfolioRoutes from "./routes/portfolio";
 
 const app = express();
 app.use(express.json());
+
+app.use("/alerts", alertRoutes);
+app.use("/portfolio", portfolioRoutes);
 
 app.get("/health", (_req, res) => {
   res.json({
